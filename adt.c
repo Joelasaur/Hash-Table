@@ -1,34 +1,41 @@
 #include "adt.h"
-#include <string.h>
 #include <stdlib.h>
 
 // forward declaration of method implementations
-int stringSize(csStringRef self);
-char * stringCStr(csStringRef self);
+int adtHash(csAdtRef self);
+bool adtEquals(csAdtRef self, csAdtRef other);
+char * adtDescription(csAdtRef self);
 
-// declare the method structure for csString
-csStringMethods strMethods = {
-	stringSize,
-	stringCStr,
+
+// declare the method structure for csAdtMethods
+csAdtMethods adtMethods = {
+	adtHash,
+	adtEquals,
+	adtDescription,
 };
 
-// declare csString constructor function
-csStringRef newCSString(char *cStr){
-	csStringRef aString = (csStringRef)malloc(sizeof(csString));
-	if(aString == (csStringRef)NULL){
-		return (csStringRef)NULL;
+// declare csAdt constructor function
+csAdtRef newCsAdt(){
+	csAdtRef anAdtRef = (csAdtRef)malloc(sizeof(csAdt));
+	if(anAdtRef == (csAdtRef)NULL){
+		return (csAdtRef)NULL;
 	}
-	aString->methods = &strMethods;
-	aString->size = strlen(cStr);
-	aString->contents = cStr;
-	return aString;
+	anAdtRef->methods = &adtMethods;
+	return anAdtRef;
 }
 
-
-int stringSize(csStringRef self){
-	return self->size;
+// nextHash()
+//  Generate 32 bit hash using a linear feedback shift register.
+//      feedback polynomial: x^32 + x^31 + x^29 + x + 1
+//      taps: 32 31 29 1
+uint32_t adtHash(csAdtRef self){
+		static uint32_t lfsr = 1;
+	  return (lfsr >> 1) ^ (-(lfsr & 1u) & 0xD0000001u);
 }
 
-char * stringCStr(csStringRef self){
-	return self->contents;
+bool adtEquals(csAdtRef self, csAdtRef other){
+
+}
+char * adtDescription(csAdtRef self){
+
 }
