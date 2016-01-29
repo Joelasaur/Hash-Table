@@ -1,8 +1,8 @@
 #include "adt.h"
-#include <stdlib.h>
+
 
 // forward declaration of method implementations
-int adtHash(csAdtRef self);
+uint32_t adtHash(csAdtRef self);
 bool adtEquals(csAdtRef self, csAdtRef other);
 char * adtDescription(csAdtRef self);
 
@@ -29,13 +29,14 @@ csAdtRef newCsAdt(){
 //      feedback polynomial: x^32 + x^31 + x^29 + x + 1
 //      taps: 32 31 29 1
 uint32_t adtHash(csAdtRef self){
-		static uint32_t lfsr = 1;
-	  return (lfsr >> 1) ^ (-(lfsr & 1u) & 0xD0000001u);
+	static uint32_t lfsr = 1;
+	return (lfsr >> 1) ^ (-(lfsr & 1u) & 0xD0000001u);
 }
 
 bool adtEquals(csAdtRef self, csAdtRef other){
-
+	return self == other;
 }
-char * adtDescription(csAdtRef self){
 
+char * adtDescription(csAdtRef self){
+	return "an ADT";
 }
