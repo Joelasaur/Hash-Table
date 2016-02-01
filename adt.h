@@ -6,6 +6,7 @@
 // Declare csAdt instance.
 typedef struct csAdt {
 	struct csAdtMethods *methods;
+	uint32_t hash;
 } csAdt, *csAdtRef;
 
 // Declare types of methods.
