@@ -1,12 +1,13 @@
 #include "adt.h"
 
+// This implements a base abstract data type.
+// Think of this as class Object.
 
 // forward declaration of method implementations
 uint32_t lfsrHash(void);
 uint32_t adtHash(csAdtRef self);
 bool adtEquals(csAdtRef self, csAdtRef other);
 char * adtDescription(csAdtRef self);
-
 
 // declare the method structure for csAdtMethods
 csAdtMethods adtMethods = {
