@@ -24,6 +24,4 @@ TEST(AdtTest, testEquals){
 	EXPECT_TRUE(SEND1(thing1,equals,thing1));
 	EXPECT_TRUE(SEND1(thing2,equals,thing2));
 	EXPECT_FALSE(SEND1(thing1,equals,thing2));
-
-
 }

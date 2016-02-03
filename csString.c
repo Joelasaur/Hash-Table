@@ -1,13 +1,17 @@
-#include "adt.h"
+#include "csString.h"
 #include <string.h>
 #include <stdlib.h>
 
 // forward declaration of method implementations
+uint32_t stringHash(csStringRef self);
+bool stringEquals(csStringRef self, csAdtRef other);
 int stringSize(csStringRef self);
 char * stringCStr(csStringRef self);
-
 // declare the method structure for csString
 csStringMethods strMethods = {
+	stringHash,
+	stringEquals,
+	stringCStr,
 	stringSize,
 	stringCStr,
 };
@@ -24,6 +28,35 @@ csStringRef newCSString(char *cStr){
 	return aString;
 }
 
+// stringHash()
+// 32 bit fnv-1a hash
+// assumes that the string like object
+//	has the char * in a field called contents
+//	has the string length in a field called count
+
+#define HASH_SEED 2166136261U
+#define HASH_PRIME 16777619U
+uint32_t stringHash(stringAdtRef self)
+{
+    uint32_t result = HASH_SEED;
+    int i;
+
+    for (i = 0; i < self->count; ++i) {
+        result = result ^ self->contents[i];
+        result = result * HASH_PRIME;
+    }
+    return result;
+}
+
+bool stringEquals(csStringRef self, csAdtRef other){
+		if(self->methods!=other->methods){
+			return false;
+		}
+		if(self->size != other->size){
+			return false;
+		}
+		return strcmp(self->contents,(csStringRef)other->contents)==0;
+}
 
 int stringSize(csStringRef self){
 	return self->size;
