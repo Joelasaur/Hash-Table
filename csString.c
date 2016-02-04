@@ -49,13 +49,15 @@ uint32_t stringHash(stringAdtRef self)
 }
 
 bool stringEquals(csStringRef self, csAdtRef other){
+		csStringRef strRef;
 		if(self->methods!=other->methods){
 			return false;
 		}
 		if(self->size != other->size){
 			return false;
 		}
-		return strcmp(self->contents,(csStringRef)other->contents)==0;
+		strRef = (csStringRef)other;
+		return strcmp(self->contents,strRef->contents)==0;
 }
 
 int stringSize(csStringRef self){
