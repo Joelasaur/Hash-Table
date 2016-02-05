@@ -36,3 +36,15 @@ TEST(csStringTest, testHash){
 	EXPECT_EQ(hash2, SEND(thing2,hash));
 	EXPECT_NE(hash1,hash2);
 }
+
+TEST(csStringTest, testEquals){
+	csStringRef string1 = newCSString("testString");
+	csStringRef string2 = newCSString("testString");
+	csStringRef string3 = newCSString("testString");
+	csStringRef string4 = newCSString("notLikeTheOthers");
+	EXPECT_TRUE(SEND1(string1, equals, (csAdtRef)string2));
+	EXPECT_TRUE(SEND1(string2, equals, (csAdtRef)string3));
+	EXPECT_TRUE(SEND1(string1, equals, (csAdtRef)string3));
+	EXPECT_FALSE(SEND1(string1, equals, (csAdtRef)string4));
+}
+

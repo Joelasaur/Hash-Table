@@ -36,12 +36,12 @@ csStringRef newCSString(char *cStr){
 
 #define HASH_SEED 2166136261U
 #define HASH_PRIME 16777619U
-uint32_t stringHash(stringAdtRef self)
+uint32_t stringHash(csStringRef self)
 {
     uint32_t result = HASH_SEED;
     int i;
 
-    for (i = 0; i < self->count; ++i) {
+    for (i = 0; i < self->size; ++i) {
         result = result ^ self->contents[i];
         result = result * HASH_PRIME;
     }
@@ -53,10 +53,10 @@ bool stringEquals(csStringRef self, csAdtRef other){
 		if(self->methods!=other->methods){
 			return false;
 		}
-		if(self->size != other->size){
+		strRef = (csStringRef)other;
+		if(self->size != strRef->size){
 			return false;
 		}
-		strRef = (csStringRef)other;
 		return strcmp(self->contents,strRef->contents)==0;
 }
 
