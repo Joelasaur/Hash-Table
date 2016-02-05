@@ -1,4 +1,26 @@
-
+//Useful prime number table sizes.
+7 
+13 
+29 
+61 
+137 
+293 
+557 
+1097 
+2213 
+3823 
+6659 
+11587 
+20173 
+35129 
+70241 
+140521 
+244589 
+489179 
+851723 
+1482919 
+2581907 
+2965847
 
 // nextHash()
 //  Generate 32 bit hash using a linear feedback shift register.
