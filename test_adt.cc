@@ -1,13 +1,8 @@
 #include "gtest/gtest.h"
 #include "adt.h"
 #include "csString.h"
+#include "hashTable.h"
 #include <string.h>
-
-#define SEND(receiver, wutdo)\
-	receiver->methods->wutdo(receiver)
-
-#define SEND1(receiver,wutdo,arg)\
-	receiver->methods->wutdo(receiver,arg)
 
 TEST(AdtTest, testHash){
 	csAdtRef thing1 = newCsAdt();
@@ -48,3 +43,78 @@ TEST(csStringTest, testEquals){
 	EXPECT_FALSE(SEND1(string1, equals, (csAdtRef)string4));
 }
 
+TEST(HashTableTest, testConstructor){
+	csHashTableRef hashTableRef = newCsHashTable(6);
+	EXPECT_EQ(hashTableRef->size, 13); 
+	EXPECT_EQ(hashTableRef->count, 0);
+}
+
+TEST(HashTableTest, testAddAndIncludesNoGrow){
+	csHashTableRef hashTable = newCsHashTable(6);
+	csAdtRef item1 = newCsAdt();
+	csStringRef item2 = newCSString((char *)"testString1");
+	EXPECT_FALSE(SEND1(hashTable, includes, item1));
+	EXPECT_FALSE(SEND1(hashTable, includes, (csAdtRef)item2));
+	EXPECT_EQ(SEND(hashTable, size), 0);
+	SEND1(hashTable, add, item1);
+	EXPECT_TRUE(SEND1(hashTable, includes, item1));
+	EXPECT_FALSE(SEND1(hashTable, includes, (csAdtRef)item2));
+	EXPECT_EQ(SEND(hashTable, size), 1);
+	SEND1(hashTable, add, (csAdtRef)item2);
+	EXPECT_TRUE(SEND1(hashTable, includes, item1));
+	EXPECT_TRUE(SEND1(hashTable, includes, (csAdtRef)item2));
+	EXPECT_EQ(SEND(hashTable, size), 2);
+	SEND1(hashTable, add, (csAdtRef)item2);
+	EXPECT_TRUE(SEND1(hashTable, includes, item1));
+	EXPECT_TRUE(SEND1(hashTable, includes, (csAdtRef)item2));
+	EXPECT_EQ(SEND(hashTable, size), 2);
+}
+
+TEST(HashTableTest, testGrow){
+	csHashTableRef hashTable = newCsHashTable(1);
+	csAdtRef item1 = newCsAdt();
+	csAdtRef item2 = newCsAdt();
+	csAdtRef item3 = newCsAdt();
+	csAdtRef item4 = newCsAdt();
+	csAdtRef item5 = newCsAdt();
+	csAdtRef item6 = newCsAdt();
+	csAdtRef item7 = newCsAdt();
+
+	EXPECT_EQ(hashTable->size, 7);
+	EXPECT_EQ(SEND(hashTable, size), 0);
+	SEND1(hashTable, add, item1);
+	SEND1(hashTable, add, item2);
+	SEND1(hashTable, add, item3);
+	SEND1(hashTable, add, item4);
+	EXPECT_EQ(hashTable->size, 7);
+	EXPECT_EQ(SEND(hashTable,size), 4);
+	SEND1(hashTable, add, item5);
+	EXPECT_EQ(hashTable->size, 13);
+	EXPECT_EQ(SEND(hashTable,size), 5);
+	SEND1(hashTable, add, item6);
+	SEND1(hashTable, add, item7);
+	EXPECT_EQ(hashTable->size, 13);
+	EXPECT_EQ(SEND(hashTable,size), 7);
+}
+
+TEST(HashTableTest, testRemove){
+	csHashTableRef hashTable = newCsHashTable(1);
+	csAdtRef item1 = newCsAdt();
+	csAdtRef item2 = newCsAdt();
+	csAdtRef item3 = newCsAdt();
+	csAdtRef item4 = newCsAdt();
+	//Modify default hashes so we get hash collisions.
+	item2->hash = item1->hash;
+	item3->hash = item1->hash;
+	item4->hash = item1->hash;
+	SEND1(hashTable, add, item1);
+	SEND1(hashTable, add, item2);
+	SEND1(hashTable, add, item3);
+	SEND1(hashTable, add, item4);
+	EXPECT_EQ(hashTable->size, 7);
+	EXPECT_EQ(SEND(hashTable, size), 4);
+	EXPECT_EQ(SEND1(hashTable, remove, item1), (csAdtRef)item1);
+	EXPECT_EQ(SEND(hashTable, size), 3);
+	EXPECT_EQ(SEND1(hashTable, remove, item2), (csAdtRef)item2);
+	EXPECT_EQ(SEND(hashTable, size), 2);
+}

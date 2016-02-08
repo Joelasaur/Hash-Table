@@ -3,6 +3,14 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdint.h>
+
+// Send message macros
+#define SEND(receiver, wutdo)\
+	receiver->methods->wutdo(receiver)
+
+#define SEND1(receiver,wutdo,arg)\
+	receiver->methods->wutdo(receiver,arg)
+
 // Declare csAdt instance.
 typedef struct csAdt {
 	struct csAdtMethods *methods;

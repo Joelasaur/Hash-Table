@@ -32,11 +32,11 @@ clean:
 endif
 
 ifeq ($(OS),Windows_NT)
-testRunner.exe: adt.o csString.o gtest-all.o test_adt.o gtest_main.o
-	$(CXX) -o testRunner adt.o csString.o gtest-all.o test_adt.o gtest_main.o -lpthread
+testRunner.exe: adt.o csString.o hashTable.o gtest-all.o test_adt.o gtest_main.o
+	$(CXX) -o testRunner adt.o csString.o hashTable.o gtest-all.o test_adt.o gtest_main.o -lpthread
 else
-testRunner: adt.o csString.o gtest-all.o test_adt.o gtest_main.o
-	$(CXX) -o testRunner adt.o csString.o gtest-all.o test_adt.o gtest_main.o -lpthread
+testRunner: adt.o csString.o hashTable.o gtest-all.o test_adt.o gtest_main.o
+	$(CXX) -o testRunner adt.o csString.o hashTable.o gtest-all.o test_adt.o gtest_main.o -lpthread
 endif
 
 GTEST_SRCS_ = $(GTEST_DIR)/src/*.cc $(GTEST_DIR)/src/*.h $(GTEST_HEADERS)
@@ -50,6 +50,9 @@ adt.o: adt.h adt.c
 
 csString.o: csString.h csString.c
 	$(CC) $(CFLAGS) -c csString.c -o csString.o
+
+hashTable.o: hashTable.h hashTable.c
+	$(CC) $(CFLAGS) -c hashTable.c -o hashTable.o
 
 test_adt.o: test_adt.cc
 	$(CXX) $(CPPFLAGS) -c test_adt.cc -o test_adt.o
