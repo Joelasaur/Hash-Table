@@ -28,8 +28,8 @@ TEST(AdtTest, testEquals){
 }
 
 TEST(csStringTest, testHash){
-	csStringRef thing1 = newCSString("testString1");
-	csStringRef thing2 = newCSString("testString2");
+	csStringRef thing1 = newCSString((char *)"testString1");
+	csStringRef thing2 = newCSString((char *)"testString2");
 	uint32_t hash1 = SEND(thing1,hash);
 	uint32_t hash2 = SEND(thing2,hash);
 	EXPECT_EQ(hash1, SEND(thing1,hash));
@@ -38,10 +38,10 @@ TEST(csStringTest, testHash){
 }
 
 TEST(csStringTest, testEquals){
-	csStringRef string1 = newCSString("testString");
-	csStringRef string2 = newCSString("testString");
-	csStringRef string3 = newCSString("testString");
-	csStringRef string4 = newCSString("notLikeTheOthers");
+	csStringRef string1 = newCSString((char *)"testString");
+	csStringRef string2 = newCSString((char *)"testString");
+	csStringRef string3 = newCSString((char *)"testString");
+	csStringRef string4 = newCSString((char *)"notLikeTheOthers");
 	EXPECT_TRUE(SEND1(string1, equals, (csAdtRef)string2));
 	EXPECT_TRUE(SEND1(string2, equals, (csAdtRef)string3));
 	EXPECT_TRUE(SEND1(string1, equals, (csAdtRef)string3));

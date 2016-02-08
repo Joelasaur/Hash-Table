@@ -50,7 +50,7 @@ uint32_t stringHash(csStringRef self)
 
 bool stringEquals(csStringRef self, csAdtRef other){
 		csStringRef strRef;
-		if(self->methods!=other->methods){
+		if((csAdtMethodsRef)self->methods != other->methods){
 			return false;
 		}
 		strRef = (csStringRef)other;
